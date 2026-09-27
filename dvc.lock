@@ -1,0 +1,96 @@
+schema: '2.0'
+stages:
+  import-ml10m:
+    cmd: lenskit data convert --movielens ml-10m.zip ml-10m
+    deps:
+    - path: ml-10m.zip
+      hash: md5
+      md5: ce571fd55effeba0271552578f2648bd
+      size: 65566137
+    outs:
+    - path: ml-10m
+      hash: md5
+      md5: efc25745848b1ef2124062bad797d036.dir
+      size: 60793568
+      nfiles: 5
+  split-ml10m:
+    cmd: lenskit data split --fraction 0.15 ml-10m
+    deps:
+    - path: ml-10m
+      hash: md5
+      md5: efc25745848b1ef2124062bad797d036.dir
+      size: 60793568
+      nfiles: 5
+    outs:
+    - path: ml-10m.test.parquet
+      hash: md5
+      md5: 00e7ba1fc72625029f6969e38b11498f
+      size: 10995317
+    - path: ml-10m.train
+      hash: md5
+      md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
+      size: 50442061
+      nfiles: 5
+  generate@ml-10m-popular:
+    cmd: python scripts/generate-recs.py popular ml-10m
+    deps:
+    - path: data/ml-10m.test.parquet
+      hash: md5
+      md5: 00e7ba1fc72625029f6969e38b11498f
+      size: 10995317
+    - path: data/ml-10m.train
+      hash: md5
+      md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
+      size: 50442061
+      nfiles: 5
+    - path: pipelines/popular.toml
+      hash: md5
+      md5: ed104618e25c8749e84674e64a05a706
+      size: 108
+    outs:
+    - path: runs/ml-10m-popular.recs.parquet
+      hash: md5
+      md5: 87621b371df82e4fe80d8a7541736459
+      size: 87970
+  generate@ml-10m-als:
+    cmd: python scripts/generate-recs.py als ml-10m
+    deps:
+    - path: data/ml-10m.test.parquet
+      hash: md5
+      md5: 00e7ba1fc72625029f6969e38b11498f
+      size: 10995317
+    - path: data/ml-10m.train
+      hash: md5
+      md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
+      size: 50442061
+      nfiles: 5
+    - path: pipelines/als.toml
+      hash: md5
+      md5: a88f57edd1e5bf7c205d84122a47e94c
+      size: 173
+    outs:
+    - path: runs/ml-10m-als.recs.parquet
+      hash: md5
+      md5: 4ebc67b0e2dc711c78227cd87e2bd632
+      size: 267105
+  generate@ml-10m-slim:
+    cmd: python scripts/generate-recs.py slim ml-10m
+    deps:
+    - path: data/ml-10m.test.parquet
+      hash: md5
+      md5: 00e7ba1fc72625029f6969e38b11498f
+      size: 10995317
+    - path: data/ml-10m.train
+      hash: md5
+      md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
+      size: 50442061
+      nfiles: 5
+    - path: pipelines/slim.toml
+      hash: md5
+      md5: 9feb36ad1c1b7ec40b7363b043dc5295
+      size: 147
+    outs:
+    - path: runs/ml-10m-slim.recs.parquet
+      hash: md5
+      md5: a77bc9cf2b36fa8822a705bab5e35f6c
+      size: 269887

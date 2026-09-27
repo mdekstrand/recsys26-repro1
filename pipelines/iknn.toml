@@ -1,0 +1,14 @@
+[meta]
+name = "iknn"
+
+[options]
+base = "std:topn"
+
+[components.scorer]
+class = "lenskit.knn.ItemKNNScorer"
+
+[components.scorer.config]
+feedback = "implicit"
+max_nbrs = 20
+min_nbrs = 2
+save_nbrs = 5000

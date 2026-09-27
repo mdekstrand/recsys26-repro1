@@ -1,0 +1,31 @@
+stages:
+  import-ml10m:
+    cmd: lenskit data convert --movielens ml-10m.zip ml-10m
+    wdir: data
+    deps:
+      - ml-10m.zip
+    outs:
+      - ml-10m
+  split-ml10m:
+    cmd: lenskit data split --fraction 0.15 ml-10m
+    wdir: data
+    deps:
+      - ml-10m
+    outs:
+      - ml-10m.train
+      - ml-10m.test.parquet
+  generate:
+    matrix:
+      data:
+        - ml-10m
+      pipeline:
+        - popular
+        - als
+        - slim
+    cmd: python scripts/generate-recs.py ${item.pipeline} ${item.data}
+    deps:
+      - pipelines/${item.pipeline}.toml
+      - data/${item.data}.train
+      - data/${item.data}.test.parquet
+    outs:
+      - runs/${item.data}-${item.pipeline}.recs.parquet
