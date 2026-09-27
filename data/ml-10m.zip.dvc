@@ -1,0 +1,12 @@
+md5: e2ab8a2bea04f02101e6add9472461b3
+frozen: true
+deps:
+- checksum: '"3e875b9-598cfd2c58a4b"'
+  size: 65566137
+  hash: md5
+  path: https://files.grouplens.org/datasets/movielens/ml-10m.zip
+outs:
+- md5: ce571fd55effeba0271552578f2648bd
+  size: 65566137
+  hash: md5
+  path: ml-10m.zip
