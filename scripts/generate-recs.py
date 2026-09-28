@@ -16,7 +16,7 @@ Options:
 from pathlib import Path
 
 from docopt import docopt
-from lenskit import Dataset, Pipeline, batch
+from lenskit import Dataset, Pipeline, batch, configure
 from lenskit.data import ItemListCollection
 from lenskit.logging import LoggingConfig, get_logger
 
@@ -33,6 +33,8 @@ def main():
     if args["--verbose"]:
         lc.set_verbose()
     lc.apply()
+    # apply LensKit configuration
+    configure()
 
     N = int(args["--num-recs"])
     pipe_name = args["PIPELINE"]

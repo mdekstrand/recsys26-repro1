@@ -24,6 +24,7 @@ stages:
         - slim
     cmd: python scripts/generate-recs.py ${item.pipeline} ${item.data}
     deps:
+      - scripts/generate-recs.py
       - pipelines/${item.pipeline}.toml
       - data/${item.data}.train
       - data/${item.data}.test.parquet
