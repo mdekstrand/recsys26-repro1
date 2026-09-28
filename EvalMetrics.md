@@ -105,7 +105,8 @@ eff_metrics = pd.melt(all_user_metrics.reset_index(), id_vars=['model', 'user_id
     pn.ggplot(eff_metrics)
     + pn.aes(x='model', y='value')
     + pn.stat_summary(geom='bar')
-    + pn.facet_wrap('metric', scales='free')
+    + pn.coord_flip()
+    + pn.facet_grid(cols='metric', scales='free')
 )
 ```
 
@@ -118,6 +119,7 @@ We'll measure the extent of exposure distribution with the Gini coefficient.
     pn.ggplot(all_summaries.reset_index())
     + pn.aes(x='model', y='ExposureGini')
     + pn.geom_col()
+    + pn.coord_flip()
 )
 ```
 
