@@ -53,7 +53,9 @@ def main():
 
     _log.info("generating recommendations")
     recs = batch.recommend(pipe, test_data, n=N)
-    out_file = OUTPUT_DIR / f"{ds_name}-{pipe_name}.recs.parquet"
+    out_dir = OUTPUT_DIR / ds_name
+    out_dir.mkdir(exist_ok=True, parents=True)
+    out_file = out_dir / f"{pipe_name}.recs.parquet"
     _log.info("saving recommendations to %s", out_file)
     recs.save_parquet(out_file)
 

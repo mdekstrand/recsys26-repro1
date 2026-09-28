@@ -47,8 +47,11 @@ stages:
       hash: md5
       md5: ed104618e25c8749e84674e64a05a706
       size: 108
+    params:
+      lenskit.toml:
+        random.seed: 20260928
     outs:
-    - path: runs/ml-10m-popular.recs.parquet
+    - path: runs/ml-10m/popular.recs.parquet
       hash: md5
       md5: 87621b371df82e4fe80d8a7541736459
       size: 87970
@@ -68,11 +71,14 @@ stages:
       hash: md5
       md5: a88f57edd1e5bf7c205d84122a47e94c
       size: 173
+    params:
+      lenskit.toml:
+        random.seed: 20260928
     outs:
-    - path: runs/ml-10m-als.recs.parquet
+    - path: runs/ml-10m/als.recs.parquet
       hash: md5
-      md5: 4ebc67b0e2dc711c78227cd87e2bd632
-      size: 267105
+      md5: ee5a48118c0fada2bc071605e1272604
+      size: 267094
   generate@ml-10m-slim:
     cmd: python scripts/generate-recs.py slim ml-10m
     deps:
@@ -94,3 +100,20 @@ stages:
       hash: md5
       md5: a77bc9cf2b36fa8822a705bab5e35f6c
       size: 269887
+  report:
+    cmd: jupytext --sync --execute EvalMetrics.md
+    deps:
+    - path: EvalMetrics.md
+      hash: md5
+      md5: 056ac1798a2eb81ee474fcd3311b79e5
+      size: 2625
+    - path: data/ml-10m
+      hash: md5
+      md5: efc25745848b1ef2124062bad797d036.dir
+      size: 60793568
+      nfiles: 5
+    outs:
+    - path: EvalMetrics.ipynb
+      hash: md5
+      md5: f9609cca49d1e3701a58b913089f8c9e
+      size: 88544

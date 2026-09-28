@@ -27,5 +27,16 @@ stages:
       - pipelines/${item.pipeline}.toml
       - data/${item.data}.train
       - data/${item.data}.test.parquet
+    params:
+      # changing random seed should change outputs
+      - lenskit.toml:
+          - random.seed
     outs:
-      - runs/${item.data}-${item.pipeline}.recs.parquet
+      - runs/${item.data}/${item.pipeline}.recs.parquet
+  report:
+    cmd: jupytext --sync --execute EvalMetrics.md
+    deps:
+      - EvalMetrics.md
+      - data/ml-10m
+    outs:
+      - EvalMetrics.ipynb
