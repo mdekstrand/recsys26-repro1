@@ -30,6 +30,7 @@ stages:
         - als
         - slim
     cmd: lenskit tune -T tuning/${item.data}/train -V tuning/${item.data}/test.parquet --save-pipeline tuning/${item.data}/${item.pipeline}.json pipelines/${item.pipeline}-search.toml tuning/${item.data}/${item.pipeline}
+    frozen: true
     deps:
       - pipelines/${item.pipeline}-search.toml
       - tuning/${item.data}/train
