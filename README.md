@@ -1,6 +1,8 @@
 # RecSys Reproducibility Tutorial Example 1
 
-This is the first example for the RecSys 2026 Reproducibility tutorial.
+This is the first example for the [RecSys 2026 Reproducibility tutorial][tut].
+
+[tut]: https://md.ekstrandom.net/resources/reproducibility
 
 ## Installation
 
