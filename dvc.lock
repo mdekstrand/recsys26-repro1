@@ -36,8 +36,8 @@ stages:
     deps:
     - path: data/ml-10m.test.parquet
       hash: md5
-      md5: 00e7ba1fc72625029f6969e38b11498f
-      size: 10995317
+      md5: c029dcfaee2651103afd6148d4984509
+      size: 2404486
     - path: data/ml-10m.train
       hash: md5
       md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
@@ -49,8 +49,8 @@ stages:
       size: 108
     - path: scripts/generate-recs.py
       hash: md5
-      md5: 5034844ad4817e4e766219af37409ed5
-      size: 1830
+      md5: 3af7b23d35b74d58da4bd40d4f0b5d0f
+      size: 2186
       isexec: true
     params:
       lenskit.toml:
@@ -58,15 +58,15 @@ stages:
     outs:
     - path: runs/ml-10m/popular.recs.parquet
       hash: md5
-      md5: 87621b371df82e4fe80d8a7541736459
-      size: 87970
+      md5: 065bc98c711c6a44e9c8d01fa51ae56a
+      size: 52770
   generate@ml-10m-als:
     cmd: python scripts/generate-recs.py als ml-10m
     deps:
     - path: data/ml-10m.test.parquet
       hash: md5
-      md5: 00e7ba1fc72625029f6969e38b11498f
-      size: 10995317
+      md5: c029dcfaee2651103afd6148d4984509
+      size: 2404486
     - path: data/ml-10m.train
       hash: md5
       md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
@@ -78,8 +78,8 @@ stages:
       size: 173
     - path: scripts/generate-recs.py
       hash: md5
-      md5: 5034844ad4817e4e766219af37409ed5
-      size: 1830
+      md5: 3af7b23d35b74d58da4bd40d4f0b5d0f
+      size: 2186
       isexec: true
     params:
       lenskit.toml:
@@ -87,15 +87,15 @@ stages:
     outs:
     - path: runs/ml-10m/als.recs.parquet
       hash: md5
-      md5: 62984c1dc4c30fcda55f68dad2e35f4c
-      size: 267139
+      md5: 69a5d301f4264c264ff2727e0108cd7d
+      size: 225357
   generate@ml-10m-slim:
     cmd: python scripts/generate-recs.py slim ml-10m
     deps:
     - path: data/ml-10m.test.parquet
       hash: md5
-      md5: 00e7ba1fc72625029f6969e38b11498f
-      size: 10995317
+      md5: c029dcfaee2651103afd6148d4984509
+      size: 2404486
     - path: data/ml-10m.train
       hash: md5
       md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
@@ -107,8 +107,8 @@ stages:
       size: 147
     - path: scripts/generate-recs.py
       hash: md5
-      md5: 5034844ad4817e4e766219af37409ed5
-      size: 1830
+      md5: 3af7b23d35b74d58da4bd40d4f0b5d0f
+      size: 2186
       isexec: true
     params:
       lenskit.toml:
@@ -116,39 +116,39 @@ stages:
     outs:
     - path: runs/ml-10m/slim.recs.parquet
       hash: md5
-      md5: a77bc9cf2b36fa8822a705bab5e35f6c
-      size: 269887
+      md5: 04bf3f232eef968f06184a51a725b44f
+      size: 223620
   report:
     cmd: jupytext --sync --execute EvalMetrics.md
     deps:
     - path: EvalMetrics.md
       hash: md5
-      md5: 056ac1798a2eb81ee474fcd3311b79e5
-      size: 2625
+      md5: 1330d5077c55ff5232e3a98bd95141b9
+      size: 2674
     - path: runs/ml-10m
       hash: md5
-      md5: eb213fa4b0bf893ac30aff587c976209.dir
-      size: 625055
-      nfiles: 4
+      md5: d93e87a62764848c5da3f8722dd5eb1f.dir
+      size: 940770
+      nfiles: 6
     outs:
     - path: EvalMetrics.ipynb
       hash: md5
-      md5: 9e2fb177ebabc9bf0bf146cb9eec5a9e
-      size: 92518
+      md5: da7e46a8a135e94199cf7a89961c5ae1
+      size: 98604
   report-html:
     cmd: jupyter nbconvert --to html EvalMetrics.ipynb
     deps:
     - path: EvalMetrics.ipynb
       hash: md5
-      md5: 9e2fb177ebabc9bf0bf146cb9eec5a9e
-      size: 92518
+      md5: da7e46a8a135e94199cf7a89961c5ae1
+      size: 98604
     outs:
     - path: EvalMetrics.html
       hash: md5
-      md5: daf302311fc8868cd779b233e520a4f0
-      size: 374599
+      md5: 738b838b4de564226ae432796332488b
+      size: 379556
   split-ml10m-valid:
-    cmd: lenskit data split --fraction 0.15 --min-train-interactions 1 -d
+    cmd: lenskit data split --fraction 0.15 --min-train-interactions 1 -d 
       tuning/ml-10m data/ml-10m.train
     deps:
     - path: data/ml-10m.train
@@ -167,8 +167,8 @@ stages:
       size: 41323921
       nfiles: 5
   tune@ml-10m-als:
-    cmd: lenskit tune -T tuning/ml-10m/train -V tuning/ml-10m/test.parquet
-      --save-pipeline tuning/ml-10m/als.json pipelines/als-search.toml
+    cmd: lenskit tune -T tuning/ml-10m/train -V tuning/ml-10m/test.parquet 
+      --save-pipeline tuning/ml-10m/als.json pipelines/als-search.toml 
       tuning/ml-10m/als
     deps:
     - path: pipelines/als-search.toml
@@ -195,7 +195,7 @@ stages:
       md5: ceb41c2daafba573c9a76a486913d9b8
       size: 2053
   generate-tuned@ml-10m-als:
-    cmd: python scripts/generate-recs.py -o runs/ml-10m/als-tuned.recs.parquet
+    cmd: python scripts/generate-recs.py -o runs/ml-10m/als-tuned.recs.parquet 
       tuning/ml-10m/als.json ml-10m
     deps:
     - path: data/ml-10m.test.parquet
@@ -224,3 +224,61 @@ stages:
       hash: md5
       md5: 4253ad6c560cc6ab427f762131dd36c8
       size: 215707
+  tune@ml-10m-slim:
+    cmd: lenskit tune -T tuning/ml-10m/train -V tuning/ml-10m/test.parquet 
+      --save-pipeline tuning/ml-10m/slim.json pipelines/slim-search.toml 
+      tuning/ml-10m/slim
+    deps:
+    - path: pipelines/slim-search.toml
+      hash: md5
+      md5: 7aceaf1ed5d92ec127852d1876450812
+      size: 304
+    - path: tuning/ml-10m/test.parquet
+      hash: md5
+      md5: e8a553908369078115d3e60d6c15e824
+      size: 2370886
+    - path: tuning/ml-10m/train
+      hash: md5
+      md5: 75498ed3256a70f20ba67821d5315a0b.dir
+      size: 41323921
+      nfiles: 5
+    outs:
+    - path: tuning/ml-10m/slim
+      hash: md5
+      md5: 861a0051a9b92a793616dd8c71a75b0a.dir
+      size: 68370
+      nfiles: 8
+    - path: tuning/ml-10m/slim.json
+      hash: md5
+      md5: 1855015e6c9017f9538767a96f22462c
+      size: 1900
+  generate-tuned@ml-10m-slim:
+    cmd: python scripts/generate-recs.py -o runs/ml-10m/slim-tuned.recs.parquet 
+      tuning/ml-10m/slim.json ml-10m
+    deps:
+    - path: data/ml-10m.test.parquet
+      hash: md5
+      md5: c029dcfaee2651103afd6148d4984509
+      size: 2404486
+    - path: data/ml-10m.train
+      hash: md5
+      md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
+      size: 50442061
+      nfiles: 5
+    - path: scripts/generate-recs.py
+      hash: md5
+      md5: 3af7b23d35b74d58da4bd40d4f0b5d0f
+      size: 2186
+      isexec: true
+    - path: tuning/ml-10m/slim.json
+      hash: md5
+      md5: 1855015e6c9017f9538767a96f22462c
+      size: 1900
+    params:
+      lenskit.toml:
+        random.seed: 20260928
+    outs:
+    - path: runs/ml-10m/slim-tuned.recs.parquet
+      hash: md5
+      md5: 03357ac6d68756b78b4d49f56aade710
+      size: 223208
