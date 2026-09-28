@@ -3,13 +3,15 @@
 Generate recommendations for test data.
 
 Usage:
-    generate-recs [-v] [-n N] PIPELINE DATASET
+    generate-recs [-v] [-n N] [-o FILE] PIPELINE DATASET
 
 Options:
     -v, --verbose   Enable verbose logging output
     -n N, --num-recs=N
                     Number of recommendations to generate [default: 10]
-    PIPELINE        Name of the pipeline to use.
+    -o FILE, --rec-out=FILE
+                    Save recommendations to FILE.
+    PIPELINE        Name of the pipeline or path to pipeline file to use.
     DATASET         Name of the dataset to use.
 """
 
@@ -38,7 +40,11 @@ def main():
 
     N = int(args["--num-recs"])
     pipe_name = args["PIPELINE"]
-    pipe_file = PIPELINE_DIR / f"{pipe_name}.toml"
+    if Path(pipe_name).exists():
+        pipe_file = Path(pipe_name)
+        pipe_name = pipe_file.name
+    else:
+        pipe_file = PIPELINE_DIR / f"{pipe_name}.toml"
     _log.info("loading pipeline %s", pipe_file)
     pipe = Pipeline.load_config(pipe_file)
 
@@ -55,9 +61,14 @@ def main():
 
     _log.info("generating recommendations")
     recs = batch.recommend(pipe, test_data, n=N)
-    out_dir = OUTPUT_DIR / ds_name
+    if out_path := args["--rec-out"]:
+        out_file = Path(out_path)
+        out_dir = out_file.parent
+    else:
+        out_dir = OUTPUT_DIR / ds_name
+        out_file = out_dir / f"{pipe_name}.recs.parquet"
+
     out_dir.mkdir(exist_ok=True, parents=True)
-    out_file = out_dir / f"{pipe_name}.recs.parquet"
     _log.info("saving recommendations to %s", out_file)
     recs.save_parquet(out_file)
 

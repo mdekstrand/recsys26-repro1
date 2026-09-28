@@ -58,6 +58,25 @@ stages:
           - random.seed
     outs:
       - runs/${item.data}/${item.pipeline}.recs.parquet
+  generate-tuned:
+    matrix:
+      data:
+        - ml-10m
+      pipeline:
+        - als
+        - slim
+    cmd: python scripts/generate-recs.py -o runs/${item.data}/${item.pipeline}-tuned.recs.parquet tuning/${item.data}/${item.pipeline}.json ${item.data}
+    deps:
+      - scripts/generate-recs.py
+      - tuning/${item.data}/${item.pipeline}.json
+      - data/${item.data}.train
+      - data/${item.data}.test.parquet
+    params:
+      # changing random seed should change outputs
+      - lenskit.toml:
+          - random.seed
+    outs:
+      - runs/${item.data}/${item.pipeline}-tuned.recs.parquet
   report:
     cmd: jupytext --sync --execute EvalMetrics.md
     deps:

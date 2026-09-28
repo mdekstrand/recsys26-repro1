@@ -194,3 +194,33 @@ stages:
       hash: md5
       md5: ceb41c2daafba573c9a76a486913d9b8
       size: 2053
+  generate-tuned@ml-10m-als:
+    cmd: python scripts/generate-recs.py -o runs/ml-10m/als-tuned.recs.parquet
+      tuning/ml-10m/als.json ml-10m
+    deps:
+    - path: data/ml-10m.test.parquet
+      hash: md5
+      md5: c029dcfaee2651103afd6148d4984509
+      size: 2404486
+    - path: data/ml-10m.train
+      hash: md5
+      md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
+      size: 50442061
+      nfiles: 5
+    - path: scripts/generate-recs.py
+      hash: md5
+      md5: 3af7b23d35b74d58da4bd40d4f0b5d0f
+      size: 2186
+      isexec: true
+    - path: tuning/ml-10m/als.json
+      hash: md5
+      md5: ceb41c2daafba573c9a76a486913d9b8
+      size: 2053
+    params:
+      lenskit.toml:
+        random.seed: 20260928
+    outs:
+    - path: runs/ml-10m/als-tuned.recs.parquet
+      hash: md5
+      md5: 4253ad6c560cc6ab427f762131dd36c8
+      size: 215707
