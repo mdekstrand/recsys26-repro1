@@ -1,0 +1,12 @@
+[search]
+max_points = 20
+list_length = 1000
+metric = "RBP"
+
+[space.scorer]
+max_nbrs = { type = "int", min = 5, max = 50 }
+min_nbrs = { type = "int", min = 1, max = 5 }
+min_sim = { type = "float", min = 0, max = 0.5, scale = "log" }
+
+[pipeline]
+file = "iknn.toml"

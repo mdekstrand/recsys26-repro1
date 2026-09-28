@@ -14,6 +14,30 @@ stages:
     outs:
       - ml-10m.train
       - ml-10m.test.parquet
+  # For this example, we re-split train to get validation data.
+  split-ml10m-valid:
+    cmd: lenskit data split --fraction 0.15 --min-train-interactions 1 -d tuning/ml-10m data/ml-10m.train
+    deps:
+      - data/ml-10m.train
+    outs:
+      - tuning/ml-10m/train
+      - tuning/ml-10m/test.parquet
+  tune:
+    matrix:
+      data:
+        - ml-10m
+      pipeline:
+        - als
+        - slim
+    cmd: lenskit tune -T tuning/${item.data}/train -V tuning/${item.data}/test.parquet --save-pipeline tuning/${item.data}/${item.pipeline}.json pipelines/${item.pipeline}-search.toml tuning/${item.data}/${item.pipeline}
+    deps:
+      - pipelines/${item.pipeline}-search.toml
+      - tuning/${item.data}/train
+      - tuning/${item.data}/test.parquet
+    outs:
+      - tuning/${item.data}/${item.pipeline}
+      - tuning/${item.data}/${item.pipeline}.json:
+          cache: false
   generate:
     matrix:
       data:

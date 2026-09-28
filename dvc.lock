@@ -14,7 +14,7 @@ stages:
       size: 60793568
       nfiles: 5
   split-ml10m:
-    cmd: lenskit data split --fraction 0.15 ml-10m
+    cmd: lenskit data split --fraction 0.15 --min-train-interactions 1 ml-10m
     deps:
     - path: ml-10m
       hash: md5
@@ -24,8 +24,8 @@ stages:
     outs:
     - path: ml-10m.test.parquet
       hash: md5
-      md5: 00e7ba1fc72625029f6969e38b11498f
-      size: 10995317
+      md5: c029dcfaee2651103afd6148d4984509
+      size: 2404486
     - path: ml-10m.train
       hash: md5
       md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
@@ -147,3 +147,50 @@ stages:
       hash: md5
       md5: daf302311fc8868cd779b233e520a4f0
       size: 374599
+  split-ml10m-valid:
+    cmd: lenskit data split --fraction 0.15 --min-train-interactions 1 -d
+      tuning/ml-10m data/ml-10m.train
+    deps:
+    - path: data/ml-10m.train
+      hash: md5
+      md5: 3fc770ca57afe8c62fe1f5c87a9e1c68.dir
+      size: 50442061
+      nfiles: 5
+    outs:
+    - path: tuning/ml-10m/test.parquet
+      hash: md5
+      md5: e8a553908369078115d3e60d6c15e824
+      size: 2370886
+    - path: tuning/ml-10m/train
+      hash: md5
+      md5: 75498ed3256a70f20ba67821d5315a0b.dir
+      size: 41323921
+      nfiles: 5
+  tune@ml-10m-als:
+    cmd: lenskit tune -T tuning/ml-10m/train -V tuning/ml-10m/test.parquet
+      --save-pipeline tuning/ml-10m/als.json pipelines/als-search.toml
+      tuning/ml-10m/als
+    deps:
+    - path: pipelines/als-search.toml
+      hash: md5
+      md5: 57ac52e241f9d3c7c32abd8a9575f9ce
+      size: 377
+    - path: tuning/ml-10m/test.parquet
+      hash: md5
+      md5: e8a553908369078115d3e60d6c15e824
+      size: 2370886
+    - path: tuning/ml-10m/train
+      hash: md5
+      md5: 75498ed3256a70f20ba67821d5315a0b.dir
+      size: 41323921
+      nfiles: 5
+    outs:
+    - path: tuning/ml-10m/als
+      hash: md5
+      md5: 8cd7823d69bbe9dba37a28c267657e26.dir
+      size: 257418
+      nfiles: 10
+    - path: tuning/ml-10m/als.json
+      hash: md5
+      md5: ceb41c2daafba573c9a76a486913d9b8
+      size: 2053

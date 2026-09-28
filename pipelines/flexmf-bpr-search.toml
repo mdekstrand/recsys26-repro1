@@ -1,0 +1,13 @@
+[search]
+max_points = 20
+list_length = 1000
+metric = "RBP"
+
+[space.scorer]
+embedding_size = { type = "int", min = 8, max = 256, scale = "pow2" }
+regularization = { type = "float", min = 1e-4, max = 10, scale = "log" }
+learning_rate = { type = "float", min = 1e-3, max = 1e-1, scale = "log" }
+negative_count = { type = "int", min = 1, max = 5 }
+
+[pipeline]
+file = "flexmf-bpr.toml"
