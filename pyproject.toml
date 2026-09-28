@@ -7,7 +7,7 @@ requires-python = ">=3.14"
 authors = [{ name = "Michael Ekstrand", email = "mdekstrand@drexel.edu" }]
 dependencies = [
   "docopt-ng~=0.9.0",
-  "dvc[s3,webdav]~=3.67",
+  "dvc[s3,webdav,ssh]~=3.67",
   "jupytext>=1.19.5",
   "lenskit~=2026.3",
   "nbconvert>=7.17.1",
