@@ -7,7 +7,7 @@ stages:
     outs:
       - ml-10m
   split-ml10m:
-    cmd: lenskit data split --fraction 0.15 ml-10m
+    cmd: lenskit data split --fraction 0.15 --min-train-interactions 1 ml-10m
     wdir: data
     deps:
       - ml-10m
