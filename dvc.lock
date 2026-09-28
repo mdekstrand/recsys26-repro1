@@ -95,8 +95,11 @@ stages:
       hash: md5
       md5: 9feb36ad1c1b7ec40b7363b043dc5295
       size: 147
+    params:
+      lenskit.toml:
+        random.seed: 20260928
     outs:
-    - path: runs/ml-10m-slim.recs.parquet
+    - path: runs/ml-10m/slim.recs.parquet
       hash: md5
       md5: a77bc9cf2b36fa8822a705bab5e35f6c
       size: 269887
@@ -107,13 +110,25 @@ stages:
       hash: md5
       md5: 056ac1798a2eb81ee474fcd3311b79e5
       size: 2625
-    - path: data/ml-10m
+    - path: runs/ml-10m
       hash: md5
-      md5: efc25745848b1ef2124062bad797d036.dir
-      size: 60793568
-      nfiles: 5
+      md5: 0db2e63d5662f555a2940025d2e38beb.dir
+      size: 625010
+      nfiles: 4
     outs:
     - path: EvalMetrics.ipynb
       hash: md5
-      md5: f9609cca49d1e3701a58b913089f8c9e
-      size: 88544
+      md5: b668db6e7df86ed0949f1ac0aedb3814
+      size: 92518
+  report-html:
+    cmd: jupyter nbconvert --to html EvalMetrics.ipynb
+    deps:
+    - path: EvalMetrics.ipynb
+      hash: md5
+      md5: b668db6e7df86ed0949f1ac0aedb3814
+      size: 92518
+    outs:
+    - path: EvalMetrics.html
+      hash: md5
+      md5: 2712600f69491361c3d13745f126e528
+      size: 374599

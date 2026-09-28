@@ -37,6 +37,12 @@ stages:
     cmd: jupytext --sync --execute EvalMetrics.md
     deps:
       - EvalMetrics.md
-      - data/ml-10m
+      - runs/ml-10m
     outs:
       - EvalMetrics.ipynb
+  report-html:
+    cmd: jupyter nbconvert --to html EvalMetrics.ipynb
+    deps:
+      - EvalMetrics.ipynb
+    outs:
+      - EvalMetrics.html
